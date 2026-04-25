@@ -5,6 +5,20 @@ spring:
   application:
     name: billing-service
 
+  # --- REDIS CONFIGURATION START ---
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000        # 10 minutes in milliseconds
+      cache-null-values: false
+  
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      # password: ${REDIS_PASSWORD} # Uncomment if your Redis requires a password
+  # --- REDIS CONFIGURATION END ---
+
   datasource:
     url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME}
@@ -13,7 +27,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update # Set to update to allow Hibernate to create/update tables if needed
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -21,9 +35,9 @@ spring:
 
   batch:
     jdbc:
-      initialize-schema: always # Creates Spring Batch metadata tables automatically
+      initialize-schema: always
     job:
-      enabled: false            # Prevent all jobs from running on startup
+      enabled: false
 
   kafka:
     bootstrap-servers: localhost:9092
